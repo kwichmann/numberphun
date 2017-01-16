@@ -2,16 +2,45 @@
 <html>
 	<head>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.min.js"></script>
-	
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/addons/p5.dom.js"></script>
+
+	<body>
+		<h1>Sandpile simulator</h1>
+		<p id="size">Size of grid (5-100):</p>
+		<p id="grains">Number of grains (10-50000):</p>
+		<p id="start"></p>
+		
 		<script>
 			var size;
 			var pile;
 			var d;
-			
+
+			var size_slider, grain_slider;
+			var button;
+
+			var running = false;
+
 			function setup() {
 				createCanvas(800, 800);
+				background(0);
+				noStroke();
+
+				var sizeP = select("#size");
+				size_slider = createSlider(5, 100, 20);
+				size_slider.parent(sizeP);
 				
-				size = 40;
+				var grainP = select("#grains");
+				grain_slider = createSlider(10, 50000, 500);
+				grain_slider.parent(grainP);
+				
+				var startP = select("#start");
+				button = createButton("Start");
+				button.parent(startP);
+				button.mousePressed(startPile);				
+			}
+
+			function startPile() {
+				size = size_slider.value();
 				pile = new Array(size)
 				d = width / size;
 						
@@ -21,13 +50,16 @@
 						pile[i].push(0);
 					}
 				}
-				pile[size / 2][size / 2] = 40000;
-				noStroke();
+				pile[Math.floor(size / 2)][Math.floor(size / 2)] = grain_slider.value();
+
+				running = true;
 			}
 			
 			function draw() {
-				build(pile);
-				pile = topple(pile);
+				if (running) {
+					build(pile);
+					pile = topple(pile);
+					}
 			}
 			
 			function build(arr) {
@@ -80,6 +112,5 @@
 		</script>
 	</head>
 	
-	<body>
 	</body>
 </html>
