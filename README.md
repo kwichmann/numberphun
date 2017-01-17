@@ -1,2 +1,2 @@
-# sandpiles
-"Infinite" grid sandpile simulation
+# Numberphun
+Work inspired by Numberphile videos.
